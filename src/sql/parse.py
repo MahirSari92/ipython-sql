@@ -29,6 +29,11 @@ def _connection_string(s, config):
         return str(URL(**cfg_dict))
     return ""
 
+def stripComments(code):
+    """ Remove Python-style comments from SQL for autograding/annotations
+    """
+    code = str(code)
+    return re.sub(r'(?m)^ *#.*\n?', '', code)
 
 def parse(cell, config):
     """Extract connection info and result variable from SQL
@@ -59,7 +64,7 @@ def parse(cell, config):
             return result
         cell = pieces[2]
 
-    result["sql"] = cell
+    result["sql"] = stripComments(cell.strip())
     return result
 
 
